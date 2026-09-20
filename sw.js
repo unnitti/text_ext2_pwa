@@ -1,5 +1,5 @@
-const CACHE = "clipboard-processor-v1";
-const ASSETS = ["./", "./index.html", "./style.css", "./app.js", "./manifest.json"];
+const CACHE = "clipboard-processor-v2";
+const ASSETS = ["./", "./index.html", "./style.css", "./app.js", "./manifest.json", "./icon.png"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
