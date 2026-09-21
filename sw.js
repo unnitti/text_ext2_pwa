@@ -1,4 +1,4 @@
-const CACHE = "clipboard-processor-v2";
+const CACHE = "clipboard-processor-v5";
 const ASSETS = ["./", "./index.html", "./style.css", "./app.js", "./manifest.json", "./icon.png"];
 
 self.addEventListener("install", event => {

@@ -78,16 +78,26 @@ function processClipboard(text) {
   return [...products, ...dates, ...locations].join("\n");
 }
 
+function runExtraction(text) {
+  source.value = text;
+  result.value = processClipboard(text);
+  copyBtn.disabled = !result.value;
+  status.textContent = result.value ? "추출 완료" : "추출된 정보가 없습니다.";
+}
+
+// 직접 붙여넣기(길게 눌러서 붙여넣기 등): 시스템 권한 확인창 없이 즉시 처리됨
+source.addEventListener("input", () => {
+  runExtraction(source.value);
+});
+
+// 버튼은 대안 경로로 유지 (환경에 따라 붙여넣기가 안 될 때 사용)
 loadBtn.addEventListener("click", async () => {
   status.textContent = "";
   try {
     const text = await navigator.clipboard.readText();
-    source.value = text;
-    result.value = processClipboard(text);
-    copyBtn.disabled = !result.value;
-    status.textContent = result.value ? "추출 완료" : "추출된 정보가 없습니다.";
+    runExtraction(text);
   } catch (err) {
-    status.textContent = "클립보드를 읽을 수 없습니다. Safari에서 클립보드 접근을 허용했는지 확인하세요.";
+    status.textContent = "클립보드를 읽을 수 없습니다. 위 입력창을 길게 눌러 직접 붙여넣어 보세요.";
   }
 });
 
@@ -112,3 +122,17 @@ copyBtn.addEventListener("click", async () => {
 if (!window.isSecureContext) {
   status.textContent = "iPhone에서는 HTTPS 환경에서 사용하세요.";
 }
+
+// 단축어 등에서 #t=인코딩된텍스트 형태로 열었을 때, 붙여넣기 없이 바로 처리.
+// 쿼리(?)가 아니라 프래그먼트(#)를 쓰는 이유: #뒤는 서버로 전송되지 않아서
+// 서버/네트워크 쪽 URL 길이 제한과 무관해짐 (텍스트가 길어도 잘릴 위험이 훨씬 줄어듦).
+(function autoLoadFromURL() {
+  const hash = location.hash.startsWith("#") ? location.hash.slice(1) : location.hash;
+  const params = new URLSearchParams(hash);
+  const t = params.get("t");
+  if (t) {
+    runExtraction(t);
+    // 주소창에 원문이 그대로 남지 않도록 정리
+    history.replaceState(null, "", location.pathname);
+  }
+})();
