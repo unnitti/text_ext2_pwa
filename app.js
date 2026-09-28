@@ -126,13 +126,18 @@ if (!window.isSecureContext) {
 // 단축어 등에서 #t=인코딩된텍스트 형태로 열었을 때, 붙여넣기 없이 바로 처리.
 // 쿼리(?)가 아니라 프래그먼트(#)를 쓰는 이유: #뒤는 서버로 전송되지 않아서
 // 서버/네트워크 쪽 URL 길이 제한과 무관해짐 (텍스트가 길어도 잘릴 위험이 훨씬 줄어듦).
-(function autoLoadFromURL() {
+// 단축어 등에서 #t=인코딩된텍스트 형태로 열었을 때, 붙여넣기 없이 바로 처리.
+function autoLoadFromURL() {
   const hash = location.hash.startsWith("#") ? location.hash.slice(1) : location.hash;
   const params = new URLSearchParams(hash);
   const t = params.get("t");
+
   if (t) {
     runExtraction(t);
     // 주소창에 원문이 그대로 남지 않도록 정리
     history.replaceState(null, "", location.pathname);
   }
-})();
+}
+
+autoLoadFromURL();
+window.addEventListener("hashchange", autoLoadFromURL);
