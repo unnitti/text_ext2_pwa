@@ -1,4 +1,4 @@
-const CACHE = 'clipboard-processor-v5';
+const CACHE = 'text-ext2-cache-v01';
 const ASSETS = [
   './',
   './index.html',
