@@ -1,4 +1,4 @@
-const CACHE = 'text-ext2-cache-v02';
+const CACHE = 'text-ext2-cache-v01';
 
 const ASSETS = [
   './',
