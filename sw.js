@@ -1,4 +1,5 @@
-const CACHE = 'text-ext2-cache-v01';
+const CACHE = 'text-ext2-cache-v02';
+
 const ASSETS = [
   './',
   './index.html',
@@ -47,8 +48,6 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => cached);
 
-      // 캐시가 있으면 즉시 사용하고,
-      // 동시에 네트워크에서 최신 파일을 받아 캐시를 갱신
       return cached || networkFetch;
     })
   );
