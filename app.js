@@ -9,19 +9,17 @@ function normalizeText(text) {
 }
 
 function extractProductCode(text) {
-  // 9자리 + 공백 + 3자리 형태를 먼저 붙여서 처리한다.
-  const compact = text.replace(/([A-Z0-9]{9})\s+([A-Z0-9]{3})(?![A-Z0-9])/g, "$1$2");
-
-  // MK... / M... / P... 의 12자리 코드.
-  // M/P 계열의 실제 예외적인 짧은 접두어 오탐을 줄이기 위해
-  // 전체 토큰 경계를 함께 확인한다.
-  const matches = compact.match(/(?:MK|M|P)[A-Z0-9]{10,11}/g) || [];
+  // 첫 글자는 영문 대문자, 이후 영문 대문자/숫자 8자리 + 공백(줄바꿈 포함) + 3자리.
+  // Live Text가 화면 폭 때문에 9자리와 마지막 3자리를 서로 다른 줄로 인식해도
+  // \s+가 줄바꿈까지 포함하므로 하나의 상품코드로 결합한다.
+  const codePattern = /(^|[^A-Z0-9])([A-Z][A-Z0-9]{8})\s+([A-Z0-9]{3})(?![A-Z0-9])/g;
   const codes = [];
 
-  for (const raw of matches) {
-    const code = raw.slice(0, 12);
-    if (code.length === 12 && !codes.includes(code)) codes.push(code);
+  for (const match of text.matchAll(codePattern)) {
+    const code = match[2] + match[3];
+    if (!codes.includes(code)) codes.push(code);
   }
+
   return codes;
 }
 
