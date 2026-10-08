@@ -6,5 +6,8 @@
   "background_color": "#f7f9fc",
   "theme_color": "#f7f9fc",
   "lang": "ko-KR",
-  "icons": [{ "src": "icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }]
+  "icons": [
+    { "src": "icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icon-android.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }
+  ]
 }
