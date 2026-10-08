@@ -1,4 +1,4 @@
-const CACHE = 'text-ext2-cache-v01';
+const CACHE = 'text-ext2-cache-v02';
 
 const ASSETS = [
   './',
@@ -6,7 +6,8 @@ const ASSETS = [
   './style.css',
   './app.js',
   './manifest.json',
-  './icon.png'
+  './icon.png',
+  './icon-android.svg'
 ];
 
 self.addEventListener('install', (event) => {
